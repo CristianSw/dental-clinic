@@ -1,4 +1,4 @@
-package clinic.dentalclinic.model;
+package dentalclinic.model;
 
 import lombok.Getter;
 import lombok.Setter;
