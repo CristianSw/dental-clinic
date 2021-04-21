@@ -1,11 +1,11 @@
 package dentalclinic.services.map;
 
 import dentalclinic.model.Doctor;
-import dentalclinic.services.CrudService;
+import dentalclinic.services.DoctorService;
 
 import java.util.Set;
 
-public class DoctorServiceMap extends AbstractMapService<Doctor, Long> implements CrudService<Doctor, Long> {
+public class DoctorServiceMap extends AbstractMapService<Doctor, Long> implements DoctorService {
 
     @Override
     public Set<Doctor> findAll() {
@@ -30,5 +30,10 @@ public class DoctorServiceMap extends AbstractMapService<Doctor, Long> implement
     @Override
     public Doctor findById(Long id) {
         return this.findById(id);
+    }
+
+    @Override
+    public Doctor findByLastName(String lastName) {
+        return null;
     }
 }
