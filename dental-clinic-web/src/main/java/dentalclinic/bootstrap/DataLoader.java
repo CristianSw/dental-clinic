@@ -4,8 +4,6 @@ import dentalclinic.model.Doctor;
 import dentalclinic.model.Patient;
 import dentalclinic.services.DoctorService;
 import dentalclinic.services.PatientService;
-import dentalclinic.services.map.DoctorServiceMap;
-import dentalclinic.services.map.PatientServiceMap;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +12,10 @@ public class DataLoader implements CommandLineRunner {
     private final DoctorService doctorService;
     private final PatientService patientService;
 
-    public DataLoader() {
-        doctorService = new DoctorServiceMap();
-        patientService = new PatientServiceMap();
+    public DataLoader(DoctorService doctorService, PatientService patientService) {
+        this.doctorService = doctorService;
+
+        this.patientService = patientService;
     }
 
     @Override

@@ -2,9 +2,10 @@ package dentalclinic.services.map;
 
 import dentalclinic.model.Patient;
 import dentalclinic.services.PatientService;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
-
+@Service
 public class PatientServiceMap extends AbstractMapService<Patient, Long> implements PatientService {
     @Override
     public Set<Patient> findAll() {
