@@ -18,7 +18,7 @@ public class PatientsController {
     @RequestMapping({"/patients", "/pacient", "/patients/index"})
     public String index(Model model) {
 
-        model.addAttribute("patients",patientService.findAll());
+        model.addAttribute("patients", patientService.findAll());
         return "/patients/index";
     }
 }

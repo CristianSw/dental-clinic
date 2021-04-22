@@ -10,17 +10,17 @@ public class DoctorServiceMap extends AbstractMapService<Doctor, Long> implement
 
     @Override
     public Set<Doctor> findAll() {
-        return this.findAll();
+        return super.findAll();
     }
 
     @Override
     public void deleteById(Long id) {
-        this.deleteById(id);
+        super.deleteById(id);
     }
 
     @Override
     public void delete(Doctor object) {
-        this.delete(object);
+        super.delete(object);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class DoctorServiceMap extends AbstractMapService<Doctor, Long> implement
 
     @Override
     public Doctor findById(Long id) {
-        return this.findById(id);
+        return super.findById(id);
     }
 
     @Override
