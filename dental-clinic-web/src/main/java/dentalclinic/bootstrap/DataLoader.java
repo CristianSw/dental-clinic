@@ -49,10 +49,10 @@ public class DataLoader implements CommandLineRunner {
         patientService.save(patient1);
 
         Patient patient2 = new Patient();
-        patient2.setId(1L);
-        patient2.setFirstName("Ion");
-        patient2.setLastName("Grubii");
-        patient2.setPhoneNumber("+37379654822");
+        patient2.setId(2L);
+        patient2.setFirstName("Igor");
+        patient2.setLastName("Budeanu");
+        patient2.setPhoneNumber("+37379652352");
 
         patientService.save(patient2);
 
