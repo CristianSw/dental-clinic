@@ -10,5 +10,6 @@ import java.time.LocalDate;
 public class Patient extends Person {
     private String phoneNumber;
     private LocalDate birthDate;
+    private String address;
 
 }
