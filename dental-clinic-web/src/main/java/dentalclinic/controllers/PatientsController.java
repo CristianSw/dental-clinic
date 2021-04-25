@@ -21,4 +21,8 @@ public class PatientsController {
         model.addAttribute("patients", patientService.findAll());
         return "/patients/index";
     }
+    @RequestMapping("/patients/find")
+    public String findPatients(Model model){
+        return "NotImplemented";
+    }
 }
