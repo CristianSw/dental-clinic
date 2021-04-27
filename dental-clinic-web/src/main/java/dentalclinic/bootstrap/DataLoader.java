@@ -2,20 +2,25 @@ package dentalclinic.bootstrap;
 
 import dentalclinic.model.Doctor;
 import dentalclinic.model.Patient;
+import dentalclinic.model.Visit;
 import dentalclinic.services.DoctorService;
 import dentalclinic.services.PatientService;
+import dentalclinic.services.VisitService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
 
 @Component
 public class DataLoader implements CommandLineRunner {
     private final DoctorService doctorService;
     private final PatientService patientService;
+    private final VisitService visitService;
 
-    public DataLoader(DoctorService doctorService, PatientService patientService) {
+    public DataLoader(DoctorService doctorService, PatientService patientService, VisitService visitService) {
         this.doctorService = doctorService;
-
         this.patientService = patientService;
+        this.visitService = visitService;
     }
 
     @Override
@@ -53,5 +58,20 @@ public class DataLoader implements CommandLineRunner {
         patientService.save(patient2);
 
         System.out.println("Patients are loaded !!!!!!!");
+
+
+        Visit visit1 = new Visit();
+        visit1.setPatient(patient1);
+        visit1.setLocalDate(LocalDate.now());
+        visit1.setDescription("Some Description");
+        visitService.save(visit1);
+
+        Visit visit2 = new Visit();
+        visit2.setPatient(patient2);
+        visit2.setLocalDate(LocalDate.now());
+        visit2.setDescription("Some Description 2");
+        visitService.save(visit2);
+        System.out.println("Visits are loaded !!! ");
+
     }
 }

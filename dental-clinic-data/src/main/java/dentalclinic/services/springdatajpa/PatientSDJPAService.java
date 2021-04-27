@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 @Service
 @Profile("springdatajpa")
 public class PatientSDJPAService implements PatientService {
@@ -40,12 +41,12 @@ public class PatientSDJPAService implements PatientService {
 
     @Override
     public void delete(Patient object) {
-    patientRepository.delete(object);
+        patientRepository.delete(object);
     }
 
     @Override
     public void deleteById(Long aLong) {
-    patientRepository.deleteById(aLong);
+        patientRepository.deleteById(aLong);
     }
 
     @Override
