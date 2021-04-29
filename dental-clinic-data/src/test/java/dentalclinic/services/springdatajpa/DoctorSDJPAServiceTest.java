@@ -59,6 +59,14 @@ class DoctorSDJPAServiceTest {
         assertEquals(1,doctor.getId());
         verify(doctorRepository).findById(anyLong());
     }
+    @Test
+    void findByIdNotFound() {
+        when(doctorRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        Doctor doctor = service.findById(1L);
+
+        assertNull(doctor);
+    }
 
     @Test
     void save() {
