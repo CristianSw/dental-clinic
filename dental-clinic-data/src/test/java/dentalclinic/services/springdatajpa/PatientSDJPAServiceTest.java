@@ -93,8 +93,6 @@ class PatientSDJPAServiceTest {
 
     @Test
     void findByLastName() {
-        Patient returnedPatient = Patient.builder().id(1L).lastName(LAST_NAME).build();
-
         when(patientRepository.findByLastName(any())).thenReturn(returnedPatient);
 
         Patient patient = service.findByLastName(LAST_NAME);
