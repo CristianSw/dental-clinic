@@ -1,9 +1,6 @@
 package dentalclinic.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,6 +12,14 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "visits")
 public class Visit extends BaseEntity {
+    @Builder
+    public Visit(Long id, LocalDate localDate, String description, Patient patient) {
+        super(id);
+        this.localDate = localDate;
+        this.description = description;
+        this.patient = patient;
+    }
+
     @Column(name = "local_date")
     private LocalDate localDate;
     @Column(name = "description")

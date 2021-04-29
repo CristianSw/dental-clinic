@@ -1,9 +1,6 @@
 package dentalclinic.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,10 +11,19 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "patient")
 public class Patient extends Person {
+    @Builder
+    public Patient(Long id, String firstName, String lastName, String phoneNumber, LocalDate birthDate, String address,
+                   Set<Visit> visits) {
+        super(id, firstName, lastName);
+        this.phoneNumber = phoneNumber;
+        this.birthDate = birthDate;
+        this.address = address;
+        this.visits = visits;
+    }
+
     @Column(name = "phone_number")
     private String phoneNumber;
     @Column(name = "birth_date")

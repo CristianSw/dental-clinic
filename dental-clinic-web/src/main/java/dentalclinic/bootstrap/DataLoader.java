@@ -66,6 +66,8 @@ public class DataLoader implements CommandLineRunner {
         visit1.setDescription("Some Description");
         visitService.save(visit1);
 
+
+
         Visit visit2 = new Visit();
         visit2.setPatient(patient2);
         visit2.setLocalDate(LocalDate.now());
