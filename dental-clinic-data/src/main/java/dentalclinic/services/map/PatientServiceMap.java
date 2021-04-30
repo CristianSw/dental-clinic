@@ -5,6 +5,7 @@ import dentalclinic.services.PatientService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -43,5 +44,10 @@ public class PatientServiceMap extends AbstractMapService<Patient, Long> impleme
                 .filter(patient -> patient.getLastName().equalsIgnoreCase(lastName))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public List<Patient> findByLastNameLike(String lastName) {
+        return null;
     }
 }

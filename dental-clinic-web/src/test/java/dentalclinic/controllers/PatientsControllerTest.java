@@ -12,13 +12,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.isNotNull;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -32,52 +30,26 @@ class PatientsControllerTest {
     @InjectMocks
     PatientsController patientsController;
     Set<Patient> patients;
+    Set<Patient> patient;
 
     MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
         patients = new HashSet<>();
+        patient = new HashSet<>();
         patients.add(Patient.builder().id(1L).build());
         patients.add(Patient.builder().id(2L).build());
+        patient.add(Patient.builder().id(1L).build());
 
         mockMvc = MockMvcBuilders.standaloneSetup( patientsController).build();
-    }
-
-    @Test
-    void index() throws Exception {
-        when(patientService.findAll()).thenReturn(patients);
-
-        mockMvc.perform(get("/patients"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/patients/index"))
-                .andExpect(model().attribute("patients",hasSize(2)));
-    }
-
-    @Test
-    void listOfPatientsByPacient() throws Exception {
-        when(patientService.findAll()).thenReturn(patients);
-
-        mockMvc.perform(get("/pacient"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/patients/index"))
-                .andExpect(model().attribute("patients",hasSize(2)));
-    }
-    @Test
-    void listOfPatientsByIndex() throws Exception {
-        when(patientService.findAll()).thenReturn(patients);
-
-        mockMvc.perform(get("/patients/index.html"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/patients/index"))
-                .andExpect(model().attribute("patients",hasSize(2)));
     }
 
     @Test
     void findPatients() throws Exception {
         mockMvc.perform(get("/patients/find"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("NotImplemented"));
+                .andExpect(view().name("/patients/findPatients"));
     }
     @Test
     void displayPatient() throws Exception {
@@ -87,5 +59,27 @@ class PatientsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("patients/patientDetails"))
                 .andExpect(model().attribute("patient", hasProperty("id",is(1L))));
+    }
+
+
+    @Test
+    void processFindFormReturnMany() throws Exception {
+        when(patientService.findByLastNameLike(anyString())).thenReturn(Arrays.asList(Patient.builder().id(1L).build(),
+                Patient.builder().id(2L).build()));
+
+        mockMvc.perform(get("/patients"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("patients/patientsList"))
+                .andExpect(model().attribute("selections", hasSize(2)));
+    }
+
+    @Test
+    void processFindFormReturnOne() throws Exception {
+        when(patientService.findByLastNameLike(anyString())).thenReturn(Arrays.asList(Patient.builder().id(1L).build()));
+
+
+        mockMvc.perform(get("/patients"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/patients/1"));
     }
 }
