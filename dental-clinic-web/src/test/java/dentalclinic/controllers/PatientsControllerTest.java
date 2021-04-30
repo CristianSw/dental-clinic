@@ -1,5 +1,6 @@
 package dentalclinic.controllers;
 
+import com.sun.istack.NotNull;
 import dentalclinic.model.Patient;
 import dentalclinic.services.PatientService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,8 +15,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -75,5 +78,14 @@ class PatientsControllerTest {
         mockMvc.perform(get("/patients/find"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("NotImplemented"));
+    }
+    @Test
+    void displayPatient() throws Exception {
+        when(patientService.findById(anyLong())).thenReturn(Patient.builder().id(1L).build());
+
+        mockMvc.perform(get("/patients/123"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("patients/patientDetails"))
+                .andExpect(model().attribute("patient", hasProperty("id",is(1L))));
     }
 }
