@@ -2,9 +2,9 @@ package dentalclinic.model;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,5 +21,4 @@ public class Doctor extends Person {
 
     @Column(name = "cabinet_number")
     private Integer cabinetNumber;
-
 }

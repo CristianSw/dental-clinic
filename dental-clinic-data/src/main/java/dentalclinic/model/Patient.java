@@ -21,7 +21,9 @@ public class Patient extends Person {
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
         this.address = address;
-        this.visits = visits;
+        if (visits == null || visits.size() > 0) {
+            this.visits = visits;
+        }
     }
 
     @Column(name = "phone_number")
@@ -32,5 +34,4 @@ public class Patient extends Person {
     private String address;
     @OneToMany(cascade = CascadeType.ALL)
     private Set<Visit> visits = new HashSet<>();
-
 }
