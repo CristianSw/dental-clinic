@@ -1,11 +1,11 @@
 package dentalclinic.controllers;
 
-import com.sun.istack.NotNull;
 import dentalclinic.model.Patient;
 import dentalclinic.services.PatientService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,10 +15,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.*;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -81,5 +81,46 @@ class PatientsControllerTest {
         mockMvc.perform(get("/patients"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/patients/1"));
+    }
+
+    @Test
+    void initCreationForm() throws Exception {
+        mockMvc.perform(get("/patients/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("patients/createOrUpdatePatientForm"))
+                .andExpect(model().attributeExists("patient"));
+        verifyZeroInteractions(patientService);
+    }
+    @Test
+    void processCreationForm() throws Exception {
+        when(patientService.save(ArgumentMatchers.any())).thenReturn(Patient.builder().id(1L).build());
+
+        mockMvc.perform(post("/patients/new"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/patients/1"))
+                .andExpect(model().attributeExists("patient"));
+
+        verify(patientService).save(ArgumentMatchers.any());
+    }
+    @Test
+    void initUpdatePatientForm() throws Exception {
+        when(patientService.findById(anyLong())).thenReturn(Patient.builder().id(1L).build());
+
+        mockMvc.perform(get("/patients/1/edit"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("patients/createOrUpdatePatientForm"))
+                .andExpect(model().attributeExists("patient"));
+    }
+
+    @Test
+    void processUpdatePatientForm() throws Exception {
+        when(patientService.save(ArgumentMatchers.any())).thenReturn(Patient.builder().id(1L).build());
+
+        mockMvc.perform(post("/patients/1/edit"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/patients/1"))
+                .andExpect(model().attributeExists("patient"));
+
+        verify(patientService).save(ArgumentMatchers.any());
     }
 }

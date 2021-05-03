@@ -5,6 +5,7 @@ import dentalclinic.services.PatientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -21,6 +22,8 @@ import java.util.List;
 @RequestMapping("/patients")
 public class PatientsController {
 
+    private static final String VIEW_OWNER_CREATE_OR_UPDATE_FORM = "patients/createOrUpdatePatientForm";
+
     private final PatientService patientService;
 
     public PatientsController(PatientService patientService) {
@@ -34,7 +37,7 @@ public class PatientsController {
 
     @RequestMapping("/find")
     public String findPatients(Model model) {
-        model.addAttribute("patient", Patient.builder().build() );
+        model.addAttribute("patient", Patient.builder().build());
         return "/patients/findPatients";
     }
 
@@ -61,9 +64,44 @@ public class PatientsController {
     }
 
     @GetMapping("/{patientId}")
-    public ModelAndView showPatient(@PathVariable("patientId") Long patientId) {
+    public ModelAndView showPatient(@PathVariable Long patientId) {
         ModelAndView mav = new ModelAndView("patients/patientDetails");
         mav.addObject(patientService.findById(patientId));
         return mav;
+    }
+
+    @GetMapping("/new")
+    public String initCreationForm(Model model) {
+        Patient patient = Patient.builder().build();
+        model.addAttribute("patient", patient);
+        return VIEW_OWNER_CREATE_OR_UPDATE_FORM;
+    }
+
+    @PostMapping("/new")
+    public String processCreationForm(@Validated Patient patient, BindingResult result) {
+        if (result.hasErrors()) {
+            return VIEW_OWNER_CREATE_OR_UPDATE_FORM;
+        } else {
+            Patient savedPatient = patientService.save(patient);
+            return "redirect:/patients/" + savedPatient.getId();
+        }
+    }
+
+    @GetMapping("{patientId}/edit")
+    public String initUpdatePatientForm(@PathVariable Long patientId, Model model) {
+        model.addAttribute(patientService.findById(patientId));
+        return VIEW_OWNER_CREATE_OR_UPDATE_FORM;
+    }
+
+    @PostMapping("{patientId}/edit")
+    public String processUpdatePatientForm(@Validated Patient patient, BindingResult result,
+                                           @PathVariable Long patientId) {
+        if (result.hasErrors()) {
+            return VIEW_OWNER_CREATE_OR_UPDATE_FORM;
+        } else {
+            patient.setId(patientId);
+            Patient savedPatient = patientService.save(patient);
+            return "redirect:/patients/" + savedPatient.getId();
+        }
     }
 }
