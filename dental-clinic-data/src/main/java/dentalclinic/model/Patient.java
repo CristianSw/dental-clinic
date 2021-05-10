@@ -32,6 +32,6 @@ public class Patient extends Person {
     private LocalDate birthDate;
     @Column(name = "adress")
     private String address;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "patient")
     private Set<Visit> visits = new HashSet<>();
 }
