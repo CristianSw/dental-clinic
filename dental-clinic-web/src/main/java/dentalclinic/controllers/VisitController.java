@@ -1,6 +1,5 @@
 package dentalclinic.controllers;
 
-import dentalclinic.model.Patient;
 import dentalclinic.model.Visit;
 import dentalclinic.services.PatientService;
 import dentalclinic.services.VisitService;
@@ -13,9 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
-import java.util.Map;
+
 
 @Controller
+@RequestMapping("/patients/{patientId}/visits")
 public class VisitController {
     private final VisitService visitService;
     private final PatientService patientService;
@@ -39,31 +39,23 @@ public class VisitController {
     }
 
 
-    @ModelAttribute("visit")
-    public Visit loadPetWithVisit(@PathVariable("patientId") Long patientId, Map<String, Object> model) {
-        Patient patient = patientService.findById(patientId);
-        model.put("patient", patient);
-        Visit visit = new Visit();
-        patient.getVisits().add(visit);
-        visit.setPatient(patient);
-        return visit;
-    }
-
-    // Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
-    @GetMapping("/patients/*/{patientId}/visits/new")
-    public String initNewVisitForm(@PathVariable("patientId") Long patientId, Model model) {
+    @GetMapping("/new")
+    public String initNweVisitForm(@PathVariable("patientId") Long patientId, Model model) {
+        model.addAttribute("visit", new Visit());
+        model.addAttribute("patient", patientService.findById(patientId));
         return "patients/createOrUpdateVisitForm";
     }
 
-    // Spring MVC calls method loadPetWithVisit(...) before processNewVisitForm is called
-    @PostMapping("/patients/{patientId}/visits/new")
-    public String processNewVisitForm(@Validated Visit visit, BindingResult result) {
+
+    @PostMapping("/new")
+    public String processNewVisitForm(@Validated Visit visit, @PathVariable("patientId") Long patientId
+            , BindingResult result) {
         if (result.hasErrors()) {
             return "patients/createOrUpdateVisitForm";
         } else {
-            Visit savedVisit = visitService.save(visit);
-
-            return "redirect:/patients/" + savedVisit.getId();
+            visit.setPatient(patientService.findById(patientId));
+            visitService.save(visit);
+            return "redirect:/patients/" + patientService.findById(patientId).getId();
         }
     }
 }
