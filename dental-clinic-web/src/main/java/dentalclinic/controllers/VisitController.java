@@ -40,7 +40,7 @@ public class VisitController {
 
 
     @GetMapping("/new")
-    public String initNweVisitForm(@PathVariable("patientId") Long patientId, Model model) {
+    public String initNewVisitForm(@PathVariable("patientId") Long patientId, Model model) {
         model.addAttribute("visit", new Visit());
         model.addAttribute("patient", patientService.findById(patientId));
         return "patients/createOrUpdateVisitForm";
@@ -54,8 +54,8 @@ public class VisitController {
             return "patients/createOrUpdateVisitForm";
         } else {
             visit.setPatient(patientService.findById(patientId));
-            visitService.save(visit);
-            return "redirect:/patients/" + patientService.findById(patientId).getId();
+            Visit savedVisit = visitService.save(visit);
+            return "redirect:/patients/" + savedVisit.getPatient().getId();
         }
     }
 }
