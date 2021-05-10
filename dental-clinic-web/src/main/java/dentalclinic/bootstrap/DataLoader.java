@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
-@Component
+//@Component
 public class DataLoader implements CommandLineRunner {
     private final DoctorService doctorService;
     private final PatientService patientService;

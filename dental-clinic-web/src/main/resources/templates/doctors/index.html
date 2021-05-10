@@ -17,10 +17,10 @@
     </thead>
     <tbody>
     <tr th:each="doctor : ${doctors}">
-        <td th:text="${doctor.getId()}">123456</td>
-        <td th:text="${doctor.getFirstName()}"></td>
-        <td th:text="${doctor.getLastName()}"></td>
-        <td th:text="${doctor.getCabinetNumber()}"></td>
+        <td th:text="${doctor?.getId()}">123456</td>
+        <td th:text="${doctor?.getFirstName()}"></td>
+        <td th:text="${doctor?.getLastName()}"></td>
+        <td th:text="${doctor?.getCabinetNumber()}"></td>
     </tr>
     </tbody>
 </table>
